@@ -38,6 +38,9 @@ use Kanboard\Model\UserModel;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
+use Kanboard\Filter\TaskDueDateRangeTestFilter;
+
+
 /**
  * Filter Provider
  *
@@ -177,6 +180,7 @@ class FilterProvider implements ServiceProviderInterface
                 ->withFilter(TaskTagFilter::getInstance()
                     ->setDatabase($c['db'])
                 )
+                ->withFilter(new TaskDueDateRangeTestFilter())
                 ->withFilter(new TaskTitleFilter(), true)
             ;
 
