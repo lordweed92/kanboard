@@ -1,0 +1,37 @@
+<?php
+
+namespace Kanboard\Filter;
+
+use Kanboard\Core\Filter\FilterInterface;
+use Kanboard\Model\TaskModel;
+
+/**
+ * Filter tasks by due date range
+ */
+class TaskDueDateRangeTestFilter extends BaseFilter implements FilterInterface
+{
+    /**
+     * Get search attribute
+     *
+     * @access public
+     * @return string[]
+     */
+    public function getAttributes()
+    {
+        return array('due_between');
+    }
+
+    /**
+     * Apply filter
+     *
+     * @access public
+     * @return FilterInterface
+     */
+    public function apply()
+    {
+        $parts = explode(",",$this->value);
+        $this->query->gte(TaskModel::TABLE.'.date_due', is_numeric($parts[0]) ? $parts[0] : strtotime($parts[0]));
+        $this->query->lte(TaskModel::TABLE.'.date_due', is_numeric($parts[1]) ? $parts[1] : strtotime($parts[1]));
+        return $this;
+    }
+}
